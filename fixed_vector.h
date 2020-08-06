@@ -18,7 +18,7 @@ public:
     using const_pointer             = const T*;
 
     //constructors
-    constexpr FixedVector() = default;
+    constexpr FixedVector() : size_{}, array{} {}
 
     //iterators
     inline constexpr iterator begin() noexcept { return array.begin(); }
@@ -32,18 +32,22 @@ public:
     inline constexpr const_reference at(size_type i) const { return array.at(i); }
     inline constexpr const_pointer const_data() const noexcept { return array.data(); }
     inline constexpr pointer data() noexcept { return array.data(); }
+    inline constexpr size_type size() const noexcept { return size_; }
+    inline constexpr bool empty() const noexcept { return size_ == 0; }
 
     void push_back(const T& item)
     {
-        if (size >= N - 1)
+        if (size_ >= N - 1)
             throw std::out_of_range{"Push back out of range"};
-        array[size++] = item;
+        array[size_++] = item;
     }
 
     //operators
+    inline constexpr reference operator[](size_type i) noexcept { return array[i]; }
+    inline constexpr const_reference operator[](size_type i) const noexcept { return array[i]; }
 
 private:
-    size_type size;
+    size_type size_;
     std::array<T, N> array;
 };
 
