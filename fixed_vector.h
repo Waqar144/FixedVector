@@ -68,7 +68,7 @@ public:
     iterator insert(iterator pos, Iter first, Iter last)
     {
         auto len = std::distance(first, last);
-        if (!len)
+        if (len <= 0)
             return pos;
 
         for (; first != last; ++first, pos++) {

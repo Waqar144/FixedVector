@@ -52,7 +52,7 @@ TEST_CASE("insert")
         REQUIRE(v.at(3) == 4);
 
         std::vector<int> vec {5,6,7,8};
-        v.insert(v.begin() + 4, vec.begin(), vec.end());
+        v.insert(v.begin() + 4, vec.end(), vec.begin());
         REQUIRE(v.at(4) == 5);
         REQUIRE(v.at(5) == 6);
         REQUIRE(v.at(6) == 7);
