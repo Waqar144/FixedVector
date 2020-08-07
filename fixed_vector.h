@@ -23,7 +23,11 @@ public:
     //constructors
     constexpr FixedVector() : size_{}, array{} {}
 
-    template<typename... Args>
+    template<typename... Args,
+             typename = typename std::enable_if<
+                 std::is_same<typename std::common_type_t<Args...>, T>::value
+                 >::type
+             >
     constexpr FixedVector(Args&& ...args) :
         array{std::forward<Args>(args)...},
         size_{sizeof...(args)}

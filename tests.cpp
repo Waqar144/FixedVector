@@ -11,6 +11,9 @@ TEST_CASE("ctors")
 
     REQUIRE(fv == FixedVector<int,5>{1,2,3,4,5});
     REQUIRE(fv.size() == 5);
+
+    int a,b,c,d;
+    FixedVector<int,4> s{a,b,c,d};
 }
 
 TEST_CASE("Size")
