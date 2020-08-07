@@ -32,6 +32,9 @@ public:
     template <typename Iter>
     FixedVector(Iter first, Iter last)
     {
+        using Type = typename std::decay<decltype (*first)>::type;
+        static_assert (std::is_same<Type, T>::value, "Invalid Type in iterators");
+
         auto len = std::distance(first, last);
         if (len <= 0 || len > N) {
             throw std::invalid_argument{"Bad iterators in ctor(first, last)"};
