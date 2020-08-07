@@ -1,6 +1,9 @@
 #include <array>
 #include <stdexcept>
 
+//#include <bits/stl_vector.h>
+//#include <bits/vector.tcc>
+
 using std::size_t;
 
 template <typename T, size_t N>
@@ -28,6 +31,13 @@ public:
     inline constexpr const_reverse_iterator rbegin() const noexcept { return array.rbegin(); }
     inline constexpr const_reverse_iterator crbegin() const noexcept { return array.crbegin(); }
 
+    inline constexpr iterator end() noexcept { return array.end(); }
+    inline constexpr const_iterator end() const noexcept { return array.end(); }
+    inline constexpr const_iterator cend() noexcept { return array.cend(); }
+    inline constexpr iterator rend() noexcept { return array.rend(); }
+    inline constexpr const_iterator rend() const noexcept { return array.rend(); }
+    inline constexpr const_iterator crend() noexcept { return array.crend(); }
+
     //functions
     inline constexpr const_reference at(size_type i) const { return array.at(i); }
     inline constexpr const_pointer const_data() const noexcept { return array.data(); }
@@ -41,6 +51,32 @@ public:
             throw std::out_of_range{"Push back out of range"};
         array[size_++] = item;
     }
+
+    iterator insert(iterator pos, const T& value)
+    {
+        *pos = value;
+        return pos;
+    }
+
+    iterator insert(iterator pos, T&& value)
+    {
+        *pos = std::move(value);
+        return pos;
+    }
+
+    template <typename Iter>
+    iterator insert(iterator pos, Iter first, Iter last)
+    {
+        auto len = std::distance(first, last);
+        if (!len)
+            return pos;
+
+        for (; first != last; ++first, pos++) {
+            *pos = *first;
+        }
+        return pos;
+    }
+
 
     //operators
     inline constexpr reference operator[](size_type i) noexcept { return array[i]; }
