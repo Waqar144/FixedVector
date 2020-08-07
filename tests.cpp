@@ -62,17 +62,14 @@ TEST_CASE("insert")
 
 TEST_CASE("operator==")
 {
-    FixedVector<int, 4> c;
-    c[0] = 1;
-    c[1] = 2;
-    c[2] = 3;
-    c[3] = 4;
+    constexpr FixedVector<int, 4> c {1, 2, 3, 4};
+    constexpr FixedVector<int, 4> d {1, 2, 3, 4};
 
-    FixedVector<int, 4> d;
-    d[0] = 1;
-    d[1] = 2;
-    d[2] = 3;
-    d[3] = 4;
+    static_assert (c.size() == 4, "size == 4");
+    static_assert (c == FixedVector<int, 4>{1,2,3,4}, "==");
+    static_assert (c == d, "c == d");
 
+    REQUIRE(c.size() == 4);
+    REQUIRE(c.size() == d.size());
     REQUIRE (c == d);
 }

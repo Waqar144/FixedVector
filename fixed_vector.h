@@ -23,6 +23,12 @@ public:
     //constructors
     constexpr FixedVector() : size_{}, array{} {}
 
+    template<typename... Args>
+    constexpr FixedVector(Args&& ...args) :
+        array{std::forward<Args>(args)...},
+        size_{sizeof...(args)}
+    {}
+
     //iterators
     inline constexpr iterator begin() noexcept { return array.begin(); }
     inline constexpr const_iterator begin() const noexcept { return array.begin(); }
