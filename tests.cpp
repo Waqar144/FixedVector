@@ -52,10 +52,27 @@ TEST_CASE("insert")
         REQUIRE(v.at(3) == 4);
 
         std::vector<int> vec {5,6,7,8};
-        v.insert(v.begin() + 4, vec.end(), vec.begin());
+        v.insert(v.begin() + 4, vec.begin(), vec.end());
         REQUIRE(v.at(4) == 5);
         REQUIRE(v.at(5) == 6);
         REQUIRE(v.at(6) == 7);
         REQUIRE(v.at(7) == 8);
     }
+}
+
+TEST_CASE("operator==")
+{
+    FixedVector<int, 4> c;
+    c[0] = 1;
+    c[1] = 2;
+    c[2] = 3;
+    c[3] = 4;
+
+    FixedVector<int, 4> d;
+    d[0] = 1;
+    d[1] = 2;
+    d[2] = 3;
+    d[3] = 4;
+
+    REQUIRE (c == d);
 }

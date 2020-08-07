@@ -77,10 +77,18 @@ public:
         return pos;
     }
 
-
     //operators
     inline constexpr reference operator[](size_type i) noexcept { return array[i]; }
     inline constexpr const_reference operator[](size_type i) const noexcept { return array[i]; }
+
+    friend constexpr bool operator==(const FixedVector& l, const FixedVector& r)
+    {
+        for (int i = 0; i < N; ++i) {
+            if (l[i] != r[i])
+                return false;
+        }
+        return true;
+    }
 
 private:
     size_type size_;
