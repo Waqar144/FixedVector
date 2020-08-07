@@ -29,6 +29,17 @@ public:
         size_{sizeof...(args)}
     {}
 
+    template <typename Iter>
+    FixedVector(Iter first, Iter last)
+    {
+        auto len = std::distance(first, last);
+        if (len <= 0 || len > N) {
+            throw std::invalid_argument{"Bad iterators in ctor(first, last)"};
+        }
+        size_ = len;
+        std::copy(first, last, begin());
+    }
+
     //iterators
     inline constexpr iterator begin() noexcept { return array.begin(); }
     inline constexpr const_iterator begin() const noexcept { return array.begin(); }

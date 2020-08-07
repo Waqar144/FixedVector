@@ -4,6 +4,15 @@
 #include <iostream>
 #include <vector>
 
+TEST_CASE("ctors")
+{
+    std::vector<int> v {1,2,3,4,5};
+    FixedVector<int, 5> fv{v.begin(), v.end()};
+
+    REQUIRE(fv == FixedVector<int,5>{1,2,3,4,5});
+    REQUIRE(fv.size() == 5);
+}
+
 TEST_CASE("Size")
 {
     FixedVector<int, 5> v;
