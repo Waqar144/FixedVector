@@ -68,7 +68,7 @@ public:
 
     void push_back(const T& item)
     {
-        if (size_ >= N - 1)
+        if (size_ >= N)
             throw std::out_of_range{"Push back out of range"};
         array[size_++] = item;
     }
