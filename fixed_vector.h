@@ -1,9 +1,6 @@
 #include <array>
 #include <stdexcept>
 
-//#include <bits/stl_vector.h>
-//#include <bits/vector.tcc>
-
 using std::size_t;
 
 template <typename T, size_t N>
