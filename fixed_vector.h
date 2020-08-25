@@ -53,7 +53,11 @@ public:
         size_{sizeof...(args)}
     {}
 
-    template <typename Iter>
+    //alias this
+    template<typename Iter>
+    using IsIterator = typename std::enable_if<!std::is_same<typename std::iterator_traits<Iter>::value_type, void>::value>::type;
+
+    template <typename Iter, typename = IsIterator<Iter> >
     FixedVector(Iter first, Iter last)
     {
         using Type = typename std::decay<decltype (*first)>::type;

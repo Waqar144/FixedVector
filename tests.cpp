@@ -14,6 +14,11 @@ TEST_CASE("ctors")
 
     int a,b,c,d;
     FixedVector<int,4> s{a,b,c,d};
+    REQUIRE(s.size() == 4);
+
+    struct A { int a, b; };
+    FixedVector<A, 2> ct{A{}, A{}};
+    REQUIRE(ct.size() == 2);
 }
 
 TEST_CASE("Size")
