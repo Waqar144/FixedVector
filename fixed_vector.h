@@ -22,12 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #include <array>
-#include <stdexcept>
+#include <cassert>
 
 using std::size_t;
 
+class FixedVectorBase {
+public:
+    constexpr FixedVectorBase() : size_{} {}
+    constexpr FixedVectorBase(size_t sz) : size_{sz} {}
+    inline constexpr size_t size() const noexcept { return size_; }
+    inline constexpr bool empty() const noexcept { return size_ == 0; }
+protected:
+    size_t size_;
+};
+
+
 template <typename T, size_t N>
-class FixedVector{
+class FixedVector : public FixedVectorBase {
 public:
     using iterator                  = typename std::array<T,N>::iterator;
     using const_iterator            = typename std::array<T,N>::const_iterator;
@@ -41,7 +52,7 @@ public:
     using const_pointer             = const T*;
 
     //constructors
-    constexpr FixedVector() : size_{}, array{} {}
+    constexpr FixedVector() : FixedVectorBase{}, array{} {}
 
     template<typename... Args,
              typename = typename std::enable_if<
@@ -49,8 +60,8 @@ public:
                  >::type
              >
     constexpr FixedVector(Args&& ...args) :
-        array{std::forward<Args>(args)...},
-        size_{sizeof...(args)}
+        FixedVectorBase{sizeof...(args)},
+        array{std::forward<Args>(args)...}
     {}
 
     //alias this
@@ -64,9 +75,7 @@ public:
         static_assert (std::is_same<Type, T>::value, "Invalid Type in iterators");
 
         auto len = std::distance(first, last);
-        if (len <= 0 || len > N) {
-            throw std::invalid_argument{"Bad iterators in ctor(first, last)"};
-        }
+        assert(len > 0 || len < N);
         size_ = len;
         std::copy(first, last, begin());
     }
@@ -90,13 +99,10 @@ public:
     inline constexpr const_reference at(size_type i) const { return array.at(i); }
     inline constexpr const_pointer const_data() const noexcept { return array.data(); }
     inline constexpr pointer data() noexcept { return array.data(); }
-    inline constexpr size_type size() const noexcept { return size_; }
-    inline constexpr bool empty() const noexcept { return size_ == 0; }
 
     void push_back(const T& item)
     {
-        if (size_ >= N)
-            throw std::out_of_range{"Push back out of range"};
+        assert(size_ < N);
         array[size_++] = item;
     }
 
@@ -129,18 +135,19 @@ public:
     inline constexpr reference operator[](size_type i) noexcept { return array[i]; }
     inline constexpr const_reference operator[](size_type i) const noexcept { return array[i]; }
 
-    friend constexpr bool operator==(const FixedVector& l, const FixedVector& r)
-    {
-        for (int i = 0; i < N; ++i) {
-            if (l[i] != r[i])
-                return false;
-        }
-        return true;
-    }
 
 private:
-    size_type size_;
     std::array<T, N> array;
 };
+
+template<typename T, size_t N>
+constexpr bool operator==(const FixedVector<T, N>& l, const FixedVector<T, N>& r)
+{
+    for (int i = 0; i < N; ++i) {
+        if (l[i] != r[i])
+            return false;
+    }
+    return true;
+}
 
 
